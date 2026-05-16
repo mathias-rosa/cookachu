@@ -1,9 +1,10 @@
 import js from '@eslint/js';
-import globals from 'globals';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import importX from 'eslint-plugin-import-x';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -25,4 +26,27 @@ export default defineConfig([
       'react-refresh/only-export-components': 'off',
     },
   },
+  {
+  files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+  plugins: {
+    import: importX,
+  },
+  rules: {
+    'import/newline-after-import': ['error', { count: 1 }],
+    'import/order': [
+      'error',
+      {
+        alphabetize: { order: 'asc', caseInsensitive: false },
+        groups: [
+          ['builtin', 'external'],
+          'internal',
+          ['index', 'sibling', 'parent'],
+        ],
+        pathGroups: [],
+        pathGroupsExcludedImportTypes: ['builtin', 'external'],
+        'newlines-between': 'always',
+      },
+    ],
+  },
+}
 ]);

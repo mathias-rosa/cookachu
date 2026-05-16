@@ -1,4 +1,5 @@
 import { cn } from '@heroui/react';
+
 import type { components } from '@/api/types';
 import { RecipeBackLink } from '@/components/recipe/RecipeBackLink';
 import { RecipeIngredientsCard } from '@/components/recipe/RecipeIngredientsCard';

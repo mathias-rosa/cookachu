@@ -1,9 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
 import { Card, Skeleton, Typography } from '@heroui/react';
+import { createFileRoute } from '@tanstack/react-router';
+import { useEffect, useRef } from 'react';
+
+import cookachuLogo from '@/assets/cookachu-logo.png';
 import { RecipeCard } from '@/components/RecipeCard';
 import { useRecipes } from '@/hooks/use-recipes';
-import { useEffect, useRef } from 'react';
-import cookachuLogo from '@/assets/cookachu-logo.png';
+
+
 
 export const Route = createFileRoute('/')({
   component: RecipesPage,

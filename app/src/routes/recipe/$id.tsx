@@ -1,5 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
 import { Card, Skeleton } from '@heroui/react';
+import { createFileRoute } from '@tanstack/react-router';
+
 import { RecipeDetail } from '@/components/RecipeDetail';
 import { useRecipe } from '@/hooks/use-recipe';
 

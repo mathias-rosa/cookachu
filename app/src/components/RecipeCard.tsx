@@ -1,6 +1,7 @@
 import { Card, Chip, cn } from '@heroui/react';
 import { Link } from '@tanstack/react-router';
 import { Clock, Users } from 'lucide-react';
+
 import type { components } from '@/api/types';
 
 type RecipeRecord = components['schemas']['RecipeRecord'];

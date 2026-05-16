@@ -1,4 +1,5 @@
 import { Card, Typography } from '@heroui/react';
+
 import type { components } from '@/api/types';
 
 type Ingredient = components['schemas']['Ingredient'];

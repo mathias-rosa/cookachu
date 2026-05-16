@@ -2,14 +2,14 @@ import '@fontsource-variable/arima/wght.css';
 import '@fontsource-variable/inter/wght.css';
 import './global.css';
 
-import { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen';
 import { queryClient } from './lib/query-client';
+import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
 const router = createRouter({

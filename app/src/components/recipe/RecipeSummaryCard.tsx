@@ -1,7 +1,9 @@
 import { Button, Card, cn, Separator } from '@heroui/react';
 import { ChefHat, Clock, Flame, Tag, Timer, Users } from 'lucide-react';
-import { Instagram } from '../icons/instagram';
+
 import { MetadataCard } from '../MetadataCard';
+import { Instagram } from '../icons/instagram';
+
 import type { components } from '@/api/types';
 
 type Recipe = components['schemas']['Recipe'];
