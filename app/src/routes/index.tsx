@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Card, Skeleton, Typography } from "@heroui/react";
-import { RecipeCard } from "@/components/RecipeCard";
-import { useRecipes } from "@/hooks/use-recipes";
-import { useEffect, useRef } from "react";
-import cookachuLogo from "@/assets/cookachu-logo.png";
+import { createFileRoute } from '@tanstack/react-router';
+import { Card, Skeleton, Typography } from '@heroui/react';
+import { RecipeCard } from '@/components/RecipeCard';
+import { useRecipes } from '@/hooks/use-recipes';
+import { useEffect, useRef } from 'react';
+import cookachuLogo from '@/assets/cookachu-logo.png';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: RecipesPage,
 });
 
@@ -39,7 +39,7 @@ function RecipesPage() {
           fetchNextPage();
         }
       },
-      { rootMargin: "200px" },
+      { rootMargin: '200px' },
     );
 
     observer.observe(node);
@@ -48,11 +48,11 @@ function RecipesPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-6 md:px-6 md:py-12">
+      <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-12">
         <div className="mb-6 md:mb-8">
           <Skeleton className="h-9 w-48 rounded-lg" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <Card key={`recipe-skeleton-${index}`} className="p-4">
               <div className="space-y-3">
@@ -75,8 +75,8 @@ function RecipesPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Card className="p-6 max-w-md">
+      <div className="flex min-h-screen items-center justify-center">
+        <Card className="max-w-md p-6">
           <p className="text-sm">Erreur: {error.message}</p>
         </Card>
       </div>
@@ -84,16 +84,16 @@ function RecipesPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 md:px-6 md:py-12">
-      <div className="flex items-center gap-4 md:gap-6 justify-center  md:flex-row-reverse w-full md:justify-between">
+    <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-12">
+      <div className="flex w-full items-center justify-center gap-4 md:flex-row-reverse md:justify-between md:gap-6">
         <img
           src={cookachuLogo}
           alt="Cookachu Logo"
-          className="w-20 h-20 mb-4 md:mx-0"
+          className="mb-4 h-20 w-20 md:mx-0"
         />
         <Typography.Heading
           level={1}
-          className="text-3xl font-bold font-display "
+          className="font-display text-3xl font-bold"
         >
           Mes Recettes
         </Typography.Heading>
@@ -104,7 +104,7 @@ function RecipesPage() {
           <p className="text-center text-sm">Aucune recette trouvée.</p>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {recipes.map((record) => (
             <RecipeCard
               record={record}

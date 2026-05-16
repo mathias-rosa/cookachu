@@ -1,7 +1,7 @@
-import { Card, Typography } from "@heroui/react";
-import type { components } from "@/api/types";
+import { Card, Typography } from '@heroui/react';
+import type { components } from '@/api/types';
 
-type Ingredient = components["schemas"]["Ingredient"];
+type Ingredient = components['schemas']['Ingredient'];
 
 type RecipeIngredientsCardProps = {
   ingredients: Ingredient[];
@@ -23,7 +23,7 @@ const formatIngredient = (ingredient: Ingredient) => {
   }
 
   parts.push(ingredient.name);
-  return parts.join(" ");
+  return parts.join(' ');
 };
 
 export const RecipeIngredientsCard = ({
@@ -31,7 +31,7 @@ export const RecipeIngredientsCard = ({
 }: RecipeIngredientsCardProps) => {
   const ingredientGroups = ingredients.reduce(
     (acc, ingredient) => {
-      const group = ingredient.group || "Autres";
+      const group = ingredient.group || 'Autres';
       if (!acc[group]) acc[group] = [];
       acc[group].push(ingredient);
       return acc;
@@ -47,7 +47,7 @@ export const RecipeIngredientsCard = ({
       <Card.Content className="space-y-4">
         {Object.entries(ingredientGroups).map(([group, groupIngredients]) => (
           <div key={group} className="space-y-2">
-            <p className="text-sm font-semibold text-accent">{group}</p>
+            <p className="text-accent text-sm font-semibold">{group}</p>
             <ul className="space-y-2 text-sm">
               {groupIngredients.map((ingredient, index) => (
                 <li key={`${group}-${index}`} className="flex gap-2">
@@ -55,7 +55,7 @@ export const RecipeIngredientsCard = ({
                   <span>
                     {formatIngredient(ingredient)}
                     {ingredient.note ? (
-                      <span className="ml-1 text-xs text-muted">
+                      <span className="text-muted ml-1 text-xs">
                         ({ingredient.note})
                       </span>
                     ) : null}

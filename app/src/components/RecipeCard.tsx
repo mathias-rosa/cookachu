@@ -1,9 +1,9 @@
-import { Card, Chip, cn } from "@heroui/react";
-import { Link } from "@tanstack/react-router";
-import { Clock, Users } from "lucide-react";
-import type { components } from "@/api/types";
+import { Card, Chip, cn } from '@heroui/react';
+import { Link } from '@tanstack/react-router';
+import { Clock, Users } from 'lucide-react';
+import type { components } from '@/api/types';
 
-type RecipeRecord = components["schemas"]["RecipeRecord"];
+type RecipeRecord = components['schemas']['RecipeRecord'];
 
 type RecipeCardProps = {
   record: RecipeRecord;
@@ -16,7 +16,7 @@ export const RecipeCard = ({ record, className }: RecipeCardProps) => {
     (recipe.prep_time_minutes ?? 0) + (recipe.cook_time_minutes ?? 0);
   const hasTime = totalMinutes > 0;
 
-  const defaultClassName = "h-full flex-1";
+  const defaultClassName = 'h-full flex-1';
 
   return (
     <Link to="/recipe/$id" params={{ id: record.id }}>
@@ -49,7 +49,7 @@ export const RecipeCard = ({ record, className }: RecipeCardProps) => {
                 {recipe.servings}
               </span>
             ) : null}
-            {source.source_type === "reel" && source.author ? (
+            {source.source_type === 'reel' && source.author ? (
               <span>{source.author}</span>
             ) : null}
           </div>

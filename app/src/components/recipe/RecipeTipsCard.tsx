@@ -1,5 +1,5 @@
-import { Card, Typography } from "@heroui/react";
-import { Lightbulb } from "lucide-react";
+import { Card, Typography } from '@heroui/react';
+import { Lightbulb } from 'lucide-react';
 
 type RecipeTipsCardProps = {
   tips?: string[];

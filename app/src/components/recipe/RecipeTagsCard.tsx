@@ -1,5 +1,5 @@
-import { Card, Chip, Typography } from "@heroui/react";
-import { Tag } from "lucide-react";
+import { Card, Chip, Typography } from '@heroui/react';
+import { Tag } from 'lucide-react';
 
 type RecipeTagsCardProps = {
   tags?: string[];

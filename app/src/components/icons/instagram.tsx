@@ -1,33 +1,33 @@
-import { createLucideIcon } from "lucide-react";
+import { createLucideIcon } from 'lucide-react';
 
-export const Instagram = createLucideIcon("Instagram", [
+export const Instagram = createLucideIcon('Instagram', [
   [
-    "rect",
+    'rect',
     {
-      key: "rect",
-      x: "2",
-      y: "2",
-      width: "20",
-      height: "20",
-      rx: "5",
-      ry: "5",
+      key: 'rect',
+      x: '2',
+      y: '2',
+      width: '20',
+      height: '20',
+      rx: '5',
+      ry: '5',
     },
   ],
   [
-    "path",
+    'path',
     {
-      key: "path",
-      d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",
+      key: 'path',
+      d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z',
     },
   ],
   [
-    "line",
+    'line',
     {
-      key: "line1",
-      x1: "17.5",
-      y1: "6.5",
-      x2: "17.51",
-      y2: "6.5",
+      key: 'line1',
+      x1: '17.5',
+      y1: '6.5',
+      x2: '17.51',
+      y2: '6.5',
     },
   ],
 ]);

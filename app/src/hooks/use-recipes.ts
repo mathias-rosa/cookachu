@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { apiClient } from "@/api/client";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { apiClient } from '@/api/client';
 
 interface UseRecipesOptions {
   pageSize?: number;
@@ -9,9 +9,9 @@ export const useRecipes = (options: UseRecipesOptions = {}) => {
   const { pageSize = 10 } = options;
 
   return useInfiniteQuery({
-    queryKey: ["recipes", pageSize],
+    queryKey: ['recipes', pageSize],
     queryFn: async ({ pageParam }) => {
-      const { data, error } = await apiClient.GET("/api/v1/recipes", {
+      const { data, error } = await apiClient.GET('/api/v1/recipes', {
         params: {
           query: {
             page: pageParam as number,
@@ -21,7 +21,7 @@ export const useRecipes = (options: UseRecipesOptions = {}) => {
       });
 
       if (error) {
-        throw new Error("Failed to fetch recipes");
+        throw new Error('Failed to fetch recipes');
       }
 
       return data;

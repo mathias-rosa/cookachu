@@ -1,10 +1,10 @@
-import { Button, Card, cn, Separator } from "@heroui/react";
-import { ChefHat, Clock, Flame, Tag, Timer, Users } from "lucide-react";
-import { Instagram } from "../icons/instagram";
-import { MetadataCard } from "../MetadataCard";
-import type { components } from "@/api/types";
+import { Button, Card, cn, Separator } from '@heroui/react';
+import { ChefHat, Clock, Flame, Tag, Timer, Users } from 'lucide-react';
+import { Instagram } from '../icons/instagram';
+import { MetadataCard } from '../MetadataCard';
+import type { components } from '@/api/types';
 
-type Recipe = components["schemas"]["Recipe"];
+type Recipe = components['schemas']['Recipe'];
 
 type RecipeSummaryCardProps = {
   recipe: Recipe;
@@ -18,10 +18,10 @@ export const RecipeSummaryCard = ({
   <Card className="gap-4">
     <Card.Header className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div className="space-y-2">
-        <Card.Title className="text-2xl md:text-3xl font-display py-2">
+        <Card.Title className="font-display py-2 text-2xl md:text-3xl">
           {recipe.title}
         </Card.Title>
-        <Card.Description className="text-base text-muted">
+        <Card.Description className="text-muted text-base">
           {recipe.description}
         </Card.Description>
       </div>
@@ -30,7 +30,7 @@ export const RecipeSummaryCard = ({
         <Button
           className="gap-2"
           onPress={() => {
-            window.open(reelUrl, "_blank", "noopener,noreferrer");
+            window.open(reelUrl, '_blank', 'noopener,noreferrer');
           }}
         >
           <Instagram size={16} />
@@ -42,8 +42,8 @@ export const RecipeSummaryCard = ({
     <Card.Content className="space-y-4">
       <div
         className={cn(
-          recipe.servings ? "sm:grid-cols-4" : "grid-cols-2 sm:grid-cols-3",
-          "grid-cols-2 grid gap-3",
+          recipe.servings ? 'sm:grid-cols-4' : 'grid-cols-2 sm:grid-cols-3',
+          'grid grid-cols-2 gap-3',
         )}
       >
         <MetadataCard>
@@ -88,11 +88,11 @@ export const RecipeSummaryCard = ({
 
       <Separator />
 
-      <div className="grid gap-3 grid-cols-3">
+      <div className="grid grid-cols-3 gap-3">
         <Card variant="secondary" className="p-3 text-center shadow-none">
           <Card.Content className="space-y-1">
-            <Clock size={18} className="mx-auto text-accent" />
-            <p className="text-xs text-muted">Preparation</p>
+            <Clock size={18} className="text-accent mx-auto" />
+            <p className="text-muted text-xs">Preparation</p>
             <p className="text-sm font-medium">
               {recipe.prep_time_minutes ?? 0} min
             </p>
@@ -100,8 +100,8 @@ export const RecipeSummaryCard = ({
         </Card>
         <Card variant="secondary" className="p-3 text-center shadow-none">
           <Card.Content className="space-y-1">
-            <Flame size={18} className="mx-auto text-accent" />
-            <p className="text-xs text-muted">Cuisson</p>
+            <Flame size={18} className="text-accent mx-auto" />
+            <p className="text-muted text-xs">Cuisson</p>
             <p className="text-sm font-medium">
               {recipe.cook_time_minutes ?? 0} min
             </p>
@@ -109,8 +109,8 @@ export const RecipeSummaryCard = ({
         </Card>
         <Card variant="secondary" className="p-3 text-center shadow-none">
           <Card.Content className="space-y-1">
-            <Timer size={18} className="mx-auto text-accent" />
-            <p className="text-xs text-muted">Repos</p>
+            <Timer size={18} className="text-accent mx-auto" />
+            <p className="text-muted text-xs">Repos</p>
             <p className="text-sm font-medium">
               {recipe.rest_time_minutes ?? 0} min
             </p>

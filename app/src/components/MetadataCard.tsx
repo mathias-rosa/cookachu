@@ -1,10 +1,10 @@
-import { cn, Surface, type SurfaceVariants } from "@heroui/react";
-import type { ReactNode } from "react";
+import { cn, Surface, type SurfaceVariants } from '@heroui/react';
+import type { ReactNode } from 'react';
 
 type MetadataCardRootProps = {
   children: ReactNode;
   className?: string;
-  variant?: SurfaceVariants["variant"];
+  variant?: SurfaceVariants['variant'];
 };
 
 type MetadataCardIconProps = {
@@ -21,13 +21,13 @@ type MetadataCardValueProps = {
 
 const MetadataCardRoot = ({
   children,
-  variant = "tertiary",
+  variant = 'tertiary',
   className,
 }: MetadataCardRootProps) => (
   <Surface
     variant={variant}
     className={cn(
-      "flex flex-row items-center rounded-2xl gap-3 px-3 py-2",
+      'flex flex-row items-center gap-3 rounded-2xl px-3 py-2',
       className,
     )}
   >
@@ -44,7 +44,7 @@ const MetadataCardContent = ({ children }: { children: ReactNode }) => (
 );
 
 const MetadataCardLabel = ({ children }: MetadataCardLabelProps) => (
-  <p className="text-xs text-muted">{children}</p>
+  <p className="text-muted text-xs">{children}</p>
 );
 
 const MetadataCardValue = ({ children }: MetadataCardValueProps) => (

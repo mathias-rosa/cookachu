@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Card, Skeleton } from "@heroui/react";
-import { RecipeDetail } from "@/components/RecipeDetail";
-import { useRecipe } from "@/hooks/use-recipe";
+import { createFileRoute } from '@tanstack/react-router';
+import { Card, Skeleton } from '@heroui/react';
+import { RecipeDetail } from '@/components/RecipeDetail';
+import { useRecipe } from '@/hooks/use-recipe';
 
-export const Route = createFileRoute("/recipe/$id")({
+export const Route = createFileRoute('/recipe/$id')({
   component: RecipePage,
 });
 
@@ -13,8 +13,8 @@ function RecipePage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-12 space-y-6">
-        <Card className="p-6 space-y-4">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 md:px-6 md:py-12">
+        <Card className="space-y-4 p-6">
           <Skeleton className="h-8 w-2/3 rounded-lg" />
           <Skeleton className="h-4 w-full rounded-lg" />
           <Skeleton className="h-4 w-5/6 rounded-lg" />
@@ -29,7 +29,7 @@ function RecipePage() {
         </Card>
         <div className="grid gap-6 md:grid-cols-2">
           {Array.from({ length: 2 }).map((_, index) => (
-            <Card key={`recipe-section-${index}`} className="p-6 space-y-3">
+            <Card key={`recipe-section-${index}`} className="space-y-3 p-6">
               <Skeleton className="h-6 w-40 rounded-lg" />
               <Skeleton className="h-4 w-full rounded-lg" />
               <Skeleton className="h-4 w-5/6 rounded-lg" />
@@ -43,7 +43,7 @@ function RecipePage() {
 
   if (error) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-12">
+      <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-12">
         <Card className="p-6">
           <p className="text-sm">Erreur: {error.message}</p>
         </Card>
@@ -53,7 +53,7 @@ function RecipePage() {
 
   if (!data) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-12">
+      <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-12">
         <Card className="p-6">
           <p className="text-sm">Recette non trouvee.</p>
         </Card>
@@ -62,7 +62,7 @@ function RecipePage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-12">
+    <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-12">
       <RecipeDetail record={data} />
     </div>
   );
