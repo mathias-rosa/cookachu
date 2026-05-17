@@ -4,427 +4,397 @@
  */
 
 export interface paths {
-  '/api/v1/health': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Health */
+        get: operations["health_api_v1_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Health */
-    get: operations['health_api_v1_health_get'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v1/recipes': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/recipes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Recipes */
+        get: operations["list_recipes_api_v1_recipes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** List Recipes */
-    get: operations['list_recipes_api_v1_recipes_get'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v1/recipes/{recipe_id}': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/recipes/{recipe_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Recipe */
+        get: operations["get_recipe_api_v1_recipes__recipe_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get Recipe */
-    get: operations['get_recipe_api_v1_recipes__recipe_id__get'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /**
-     * Appliance
-     * @enum {string}
-     */
-    Appliance:
-      | 'four'
-      | 'airfryer'
-      | 'micro-ondes'
-      | 'mixeur'
-      | 'robot culinaire'
-      | 'batteur électrique'
-      | 'cuiseur vapeur'
-      | 'plaque de cuisson'
-      | 'autre';
-    /**
-     * CuisineType
-     * @enum {string}
-     */
-    CuisineType:
-      | 'française'
-      | 'italienne'
-      | 'asiatique'
-      | 'moyen-orientale'
-      | 'américaine'
-      | 'méditerranéenne'
-      | 'mexicaine'
-      | 'indienne'
-      | 'autre';
-    /**
-     * Difficulty
-     * @enum {string}
-     */
-    Difficulty: 'facile' | 'moyen' | 'difficile';
-    /**
-     * DishType
-     * @enum {string}
-     */
-    DishType:
-      | 'entrée'
-      | 'plat principal'
-      | 'dessert'
-      | 'snack'
-      | 'boisson'
-      | 'sauce';
-    /** HTTPValidationError */
-    HTTPValidationError: {
-      /** Detail */
-      detail?: components['schemas']['ValidationError'][];
+    schemas: {
+        /**
+         * Appliance
+         * @enum {string}
+         */
+        Appliance: "oven" | "air_fryer" | "microwave" | "blender" | "food_processor" | "stand_mixer" | "hand_mixer" | "steamer" | "stovetop" | "induction_cooktop" | "pressure_cooker" | "slow_cooker" | "rice_cooker" | "grill" | "barbecue" | "toaster" | "toaster_oven" | "coffee_machine" | "kettle" | "waffle_maker" | "panini_press" | "deep_fryer" | "other";
+        /**
+         * CuisineType
+         * @enum {string}
+         */
+        CuisineType: "french" | "italian" | "spanish" | "portuguese" | "greek" | "turkish" | "german" | "british" | "irish" | "belgian" | "dutch" | "swiss" | "austrian" | "polish" | "hungarian" | "czech" | "scandinavian" | "swedish" | "norwegian" | "finnish" | "danish" | "balkan" | "russian" | "ukrainian" | "chinese" | "japanese" | "korean" | "taiwanese" | "mongolian" | "thai" | "vietnamese" | "indonesian" | "malaysian" | "filipino" | "singaporean" | "cambodian" | "laotian" | "burmese" | "indian" | "pakistani" | "bangladeshi" | "sri_lankan" | "nepalese" | "lebanese" | "syrian" | "persian" | "israeli" | "arabian" | "afghan" | "uzbek" | "moroccan" | "algerian" | "tunisian" | "ethiopian" | "senegalese" | "south_african" | "nigerian" | "american" | "canadian" | "mexican" | "tex_mex" | "brazilian" | "argentinian" | "peruvian" | "colombian" | "caribbean" | "cuban" | "jamaican" | "australian" | "new_zealand" | "polynesian" | "mediterranean" | "latin_american" | "cajun" | "creole" | "soul_food" | "bbq" | "vegan" | "vegetarian" | "seafood" | "street_food" | "fusion" | "other";
+        /**
+         * Difficulty
+         * @enum {string}
+         */
+        Difficulty: "easy" | "medium" | "hard" | "expert";
+        /**
+         * DishType
+         * @enum {string}
+         */
+        DishType: "starter" | "main_course" | "dessert" | "snack" | "drink" | "sauce" | "side_dish" | "soup" | "salad" | "breakfast" | "brunch" | "appetizer";
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Ingredient */
+        Ingredient: {
+            /**
+             * Name
+             * @description Nom de l'ingrédient uniquement. Ex: 'poulet', 'ail'.
+             */
+            name: string;
+            /**
+             * Quantity
+             * @description Valeur numérique uniquement. Ex: 2.0, 0.5, 680.0. None si non mesurable.
+             */
+            quantity?: number | null;
+            /**
+             * Unit
+             * @description Unité de mesure. Ex: 'g', 'ml', 'c.à.s.', 'c.à.c.'. None si compté en unités.
+             */
+            unit?: string | null;
+            /**
+             * Count
+             * @description Nombre d'unités entières. Ex: 3 œufs, 2 citrons. None si quantity/unit renseignés.
+             */
+            count?: number | null;
+            /**
+             * Note
+             * @description Préparation ou précision. Ex: 'finement haché', 'à température ambiante'.
+             */
+            note?: string | null;
+            /**
+             * Group
+             * @description Groupe d'appartenance si la recette a des composants distincts. Ex: 'Marinade', 'Sauce', 'Garniture'. None si recette plate.
+             */
+            group?: string | null;
+        };
+        /** InstructionStep */
+        InstructionStep: {
+            /**
+             * Title
+             * @description Titre court de l'étape. Ex: 'Marinade', 'Cuisson du riz', 'Dressage'. None si l'étape ne correspond pas à une phase distincte.
+             */
+            title?: string | null;
+            /**
+             * Description
+             * @description Instructions détaillées de l'étape.
+             */
+            description: string;
+        };
+        /** PhotoRecipeSource */
+        PhotoRecipeSource: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            source_type: "photo";
+            /**
+             * Photo Id
+             * @description Stable photo fingerprint or external identifier.
+             */
+            photo_id: string;
+            /**
+             * Original Url
+             * @description Original photo URL when available.
+             */
+            original_url?: string | null;
+            /**
+             * Caption
+             * @description Original photo caption.
+             */
+            caption?: string | null;
+        };
+        /** Recipe */
+        Recipe: {
+            /**
+             * Is Recipe
+             * @description Indique si l'entrée est une recette valide ou non.
+             * @default true
+             */
+            is_recipe: boolean;
+            /** Title */
+            title: string;
+            /**
+             * Description
+             * @description Une phrase qui donne envie et résume le plat.
+             */
+            description: string;
+            cuisine_type: components["schemas"]["CuisineType"];
+            dish_type: components["schemas"]["DishType"];
+            difficulty: components["schemas"]["Difficulty"];
+            /**
+             * Prep Time Minutes
+             * @description Temps de préparation actif en minutes (0-1440).
+             */
+            prep_time_minutes?: number | null;
+            /**
+             * Cook Time Minutes
+             * @description Temps de cuisson en minutes (0-1440).
+             */
+            cook_time_minutes?: number | null;
+            /**
+             * Rest Time Minutes
+             * @description Marinade, repos, réfrigération (0-1440). None si absent.
+             */
+            rest_time_minutes?: number | null;
+            /**
+             * Servings
+             * @description Nombre de personnes (1-100). None si non déductible.
+             */
+            servings?: number | null;
+            /**
+             * Appliances
+             * @description Appareils électroménagers requis. Vide si cuisson standard.
+             */
+            appliances?: components["schemas"]["Appliance"][];
+            /**
+             * Utensils
+             * @description Ustensiles notables. Ex: 'wok', 'mandoline'. Exclure couteau, planche, bol.
+             */
+            utensils?: string[];
+            /** Ingredients */
+            ingredients: components["schemas"]["Ingredient"][];
+            /** Instructions */
+            instructions: components["schemas"]["InstructionStep"][];
+            /**
+             * Tags
+             * @description Mots-clés courts. Ex: 'one-pan', 'meal-prep', 'sans gluten'.
+             */
+            tags?: string[];
+            /**
+             * Tips
+             * @description Astuces du créateur visibles dans la vidéo ou la caption.
+             */
+            tips?: string[];
+        };
+        /** RecipePage */
+        RecipePage: {
+            /** Items */
+            items: components["schemas"]["RecipeRecord"][];
+            /** Page */
+            page: number;
+            /** Page Size */
+            page_size: number;
+            /** Total */
+            total: number;
+            /** Total Pages */
+            total_pages: number;
+        };
+        /** RecipeRecord */
+        RecipeRecord: {
+            recipe: components["schemas"]["Recipe"];
+            /** Source */
+            source: components["schemas"]["ReelRecipeSource"] | components["schemas"]["PhotoRecipeSource"] | components["schemas"]["TextRecipeSource"];
+            /** Id */
+            readonly id: string;
+        };
+        /** ReelRecipeSource */
+        ReelRecipeSource: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            source_type: "reel";
+            /**
+             * Reel Url
+             * @description Original Instagram Reel URL
+             */
+            reel_url: string;
+            /**
+             * Shortcode
+             * @description Unique identifier for the reel.
+             */
+            shortcode: string;
+            /**
+             * Author
+             * @description Coontent creator name
+             */
+            author: string;
+            /**
+             * Caption
+             * @description Original reel caption
+             */
+            caption?: string | null;
+        };
+        /** TextRecipeSource */
+        TextRecipeSource: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            source_type: "text";
+            /**
+             * Text Id
+             * @description Stable text fingerprint or external identifier.
+             */
+            text_id: string;
+            /**
+             * Author
+             * @description Author or sender of the text, when available.
+             */
+            author?: string | null;
+            /**
+             * Caption
+             * @description Original message text or caption.
+             */
+            caption?: string | null;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
+        };
     };
-    /** Ingredient */
-    Ingredient: {
-      /**
-       * Name
-       * @description Nom de l'ingrédient uniquement. Ex: 'poulet', 'ail'.
-       */
-      name: string;
-      /**
-       * Quantity
-       * @description Valeur numérique uniquement. Ex: 2.0, 0.5, 680.0. None si non mesurable.
-       */
-      quantity?: number | null;
-      /**
-       * Unit
-       * @description Unité de mesure. Ex: 'g', 'ml', 'c.à.s.', 'c.à.c.'. None si compté en unités.
-       */
-      unit?: string | null;
-      /**
-       * Count
-       * @description Nombre d'unités entières. Ex: 3 œufs, 2 citrons. None si quantity/unit renseignés.
-       */
-      count?: number | null;
-      /**
-       * Note
-       * @description Préparation ou précision. Ex: 'finement haché', 'à température ambiante'.
-       */
-      note?: string | null;
-      /**
-       * Group
-       * @description Groupe d'appartenance si la recette a des composants distincts. Ex: 'Marinade', 'Sauce', 'Garniture'. None si recette plate.
-       */
-      group?: string | null;
-    };
-    /** InstructionStep */
-    InstructionStep: {
-      /**
-       * Title
-       * @description Titre court de l'étape. Ex: 'Marinade', 'Cuisson du riz', 'Dressage'. None si l'étape ne correspond pas à une phase distincte.
-       */
-      title?: string | null;
-      /**
-       * Description
-       * @description Instructions détaillées de l'étape.
-       */
-      description: string;
-    };
-    /** PhotoRecipeSource */
-    PhotoRecipeSource: {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      source_type: 'photo';
-      /**
-       * Photo Id
-       * @description Stable photo fingerprint or external identifier.
-       */
-      photo_id: string;
-      /**
-       * Original Url
-       * @description Original photo URL when available.
-       */
-      original_url?: string | null;
-      /**
-       * Caption
-       * @description Original photo caption.
-       */
-      caption?: string | null;
-    };
-    /** Recipe */
-    Recipe: {
-      /**
-       * Is Recipe
-       * @description Indique si l'entrée est une recette valide ou non.
-       * @default true
-       */
-      is_recipe: boolean;
-      /** Title */
-      title: string;
-      /**
-       * Description
-       * @description Une phrase qui donne envie et résume le plat.
-       */
-      description: string;
-      cuisine_type: components['schemas']['CuisineType'];
-      dish_type: components['schemas']['DishType'];
-      difficulty: components['schemas']['Difficulty'];
-      /**
-       * Prep Time Minutes
-       * @description Temps de préparation actif en minutes (0-1440).
-       */
-      prep_time_minutes?: number | null;
-      /**
-       * Cook Time Minutes
-       * @description Temps de cuisson en minutes (0-1440).
-       */
-      cook_time_minutes?: number | null;
-      /**
-       * Rest Time Minutes
-       * @description Marinade, repos, réfrigération (0-1440). None si absent.
-       */
-      rest_time_minutes?: number | null;
-      /**
-       * Servings
-       * @description Nombre de personnes (1-100). None si non déductible.
-       */
-      servings?: number | null;
-      /**
-       * Appliances
-       * @description Appareils électroménagers requis. Vide si cuisson standard.
-       */
-      appliances?: components['schemas']['Appliance'][];
-      /**
-       * Utensils
-       * @description Ustensiles notables. Ex: 'wok', 'mandoline'. Exclure couteau, planche, bol.
-       */
-      utensils?: string[];
-      /** Ingredients */
-      ingredients: components['schemas']['Ingredient'][];
-      /** Instructions */
-      instructions: components['schemas']['InstructionStep'][];
-      /**
-       * Tags
-       * @description Mots-clés courts. Ex: 'one-pan', 'meal-prep', 'sans gluten'.
-       */
-      tags?: string[];
-      /**
-       * Tips
-       * @description Astuces du créateur visibles dans la vidéo ou la caption.
-       */
-      tips?: string[];
-    };
-    /** RecipePage */
-    RecipePage: {
-      /** Items */
-      items: components['schemas']['RecipeRecord'][];
-      /** Page */
-      page: number;
-      /** Page Size */
-      page_size: number;
-      /** Total */
-      total: number;
-      /** Total Pages */
-      total_pages: number;
-    };
-    /** RecipeRecord */
-    RecipeRecord: {
-      /**
-       * Id
-       * @description Canonical, stable identifier for the stored record.
-       */
-      id: string;
-      recipe: components['schemas']['Recipe'];
-      /** Source */
-      source:
-        | components['schemas']['ReelRecipeSource']
-        | components['schemas']['PhotoRecipeSource']
-        | components['schemas']['TextRecipeSource'];
-    };
-    /** ReelRecipeSource */
-    ReelRecipeSource: {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      source_type: 'reel';
-      /**
-       * Reel Url
-       * @description Original Instagram Reel URL
-       */
-      reel_url: string;
-      /**
-       * Shortcode
-       * @description Unique identifier for the reel.
-       */
-      shortcode: string;
-      /**
-       * Author
-       * @description Coontent creator name
-       */
-      author: string;
-      /**
-       * Caption
-       * @description Original reel caption
-       */
-      caption?: string | null;
-    };
-    /** TextRecipeSource */
-    TextRecipeSource: {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      source_type: 'text';
-      /**
-       * Text Id
-       * @description Stable text fingerprint or external identifier.
-       */
-      text_id: string;
-      /**
-       * Author
-       * @description Author or sender of the text, when available.
-       */
-      author?: string | null;
-      /**
-       * Caption
-       * @description Original message text or caption.
-       */
-      caption?: string | null;
-    };
-    /** ValidationError */
-    ValidationError: {
-      /** Location */
-      loc: (string | number)[];
-      /** Message */
-      msg: string;
-      /** Error Type */
-      type: string;
-      /** Input */
-      input?: unknown;
-      /** Context */
-      ctx?: Record<string, never>;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  health_api_v1_health_get: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    health_api_v1_health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    list_recipes_api_v1_recipes_get: {
+        parameters: {
+            query?: {
+                /** @description Page number, starting at 1. */
+                page?: number;
+                /** @description Number of recipes per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          'application/json': {
-            [key: string]: string;
-          };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipePage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
         };
-      };
     };
-  };
-  list_recipes_api_v1_recipes_get: {
-    parameters: {
-      query?: {
-        /** @description Page number, starting at 1. */
-        page?: number;
-        /** @description Number of recipes per page. */
-        page_size?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
+    get_recipe_api_v1_recipes__recipe_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeRecord"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['RecipePage'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
-  get_recipe_api_v1_recipes__recipe_id__get: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        recipe_id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['RecipeRecord'];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
 }

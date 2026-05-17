@@ -2,44 +2,55 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
-
-class CuisineType(StrEnum):
-    FRANCAISE = "française"
-    ITALIENNE = "italienne"
-    ASIATIQUE = "asiatique"
-    MOYEN_ORIENTALE = "moyen-orientale"
-    AMERICAINE = "américaine"
-    MEDITERRANEENNE = "méditerranéenne"
-    MEXICAINE = "mexicaine"
-    INDIENNE = "indienne"
-    AUTRE = "autre"
+from .cuisine_type import CuisineType
 
 
 class DishType(StrEnum):
-    ENTREE = "entrée"
-    PLAT = "plat principal"
+    STARTER = "starter"
+    MAIN_COURSE = "main_course"
     DESSERT = "dessert"
     SNACK = "snack"
-    BOISSON = "boisson"
+    DRINK = "drink"
     SAUCE = "sauce"
+    SIDE_DISH = "side_dish"
+    SOUP = "soup"
+    SALAD = "salad"
+    BREAKFAST = "breakfast"
+    BRUNCH = "brunch"
+    APPETIZER = "appetizer"
 
 
 class Difficulty(StrEnum):
-    FACILE = "facile"
-    MOYEN = "moyen"
-    DIFFICILE = "difficile"
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
+    EXPERT = "expert"
 
 
 class Appliance(StrEnum):
-    FOUR = "four"
-    AIRFRYER = "airfryer"
-    MICRO_ONDES = "micro-ondes"
-    MIXEUR = "mixeur"
-    ROBOT_CULINAIRE = "robot culinaire"
-    BATTEUR = "batteur électrique"
-    CUISEUR_VAPEUR = "cuiseur vapeur"
-    PLAQUE = "plaque de cuisson"
-    AUTRE = "autre"
+    OVEN = "oven"
+    AIR_FRYER = "air_fryer"
+    MICROWAVE = "microwave"
+    BLENDER = "blender"
+    FOOD_PROCESSOR = "food_processor"
+    STAND_MIXER = "stand_mixer"
+    HAND_MIXER = "hand_mixer"
+    STEAMER = "steamer"
+    STOVETOP = "stovetop"
+    INDUCTION_COOKTOP = "induction_cooktop"
+    PRESSURE_COOKER = "pressure_cooker"
+    SLOW_COOKER = "slow_cooker"
+    RICE_COOKER = "rice_cooker"
+    GRILL = "grill"
+    BARBECUE = "barbecue"
+    TOASTER = "toaster"
+    TOASTER_OVEN = "toaster_oven"
+    COFFEE_MACHINE = "coffee_machine"
+    KETTLE = "kettle"
+    WAFFLE_MAKER = "waffle_maker"
+    PANINI_PRESS = "panini_press"
+    DEEP_FRYER = "deep_fryer"
+    OTHER = "other"
 
 
 class Ingredient(BaseModel):
