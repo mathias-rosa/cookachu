@@ -3,7 +3,9 @@ from supabase import Client, create_client
 from core.ports import RecipeRepository
 from domain.exceptions import RepositoryReadError, RepositoryWriteError
 from domain.recipe_record import RecipeRecord
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class SupabaseRecipeRepository(RecipeRepository):
@@ -37,7 +39,7 @@ class SupabaseRecipeRepository(RecipeRepository):
         except Exception as exc:
             if isinstance(exc, RepositoryWriteError):
                 raise
-            logger.error(f"Error saving recipe to Supabase: {exc}")
+            logger.exception("Unexpected error saving recipe to Supabase: %s", exc)
             raise RepositoryWriteError(
                 f"Error saving recipe to Supabase: {exc}"
             ) from exc
@@ -57,7 +59,9 @@ class SupabaseRecipeRepository(RecipeRepository):
 
             return RecipeRecord.model_validate(rows[0])
         except Exception as exc:
-            logger.error(f"Error finding recipe by id in Supabase: {exc}")
+            logger.exception(
+                "Unexpected error finding recipe by id in Supabase: %s", exc
+            )
             raise RepositoryReadError(
                 f"Error finding recipe by id in Supabase: {exc}"
             ) from exc
@@ -70,7 +74,7 @@ class SupabaseRecipeRepository(RecipeRepository):
             rows = getattr(response, "data", None) or []
             return [row["id"] for row in rows if row.get("id")]
         except Exception as exc:
-            logger.error(f"Error listing recipe ids in Supabase: {exc}")
+            logger.exception("Unexpected error listing recipe ids in Supabase: %s", exc)
             raise RepositoryReadError(
                 f"Error listing recipe ids in Supabase: {exc}"
             ) from exc
@@ -86,6 +90,8 @@ class SupabaseRecipeRepository(RecipeRepository):
                 if record:
                     recipes.append(record)
             except Exception as exc:
-                logger.warning(f"Failed to load recipe {record_id}: {exc}")
+                logger.warning(
+                    "Failed to load recipe: record_id=%s error=%s", record_id, exc
+                )
 
         return recipes

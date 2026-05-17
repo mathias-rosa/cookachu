@@ -3,7 +3,9 @@ from pathlib import Path
 from core.ports import RecipeRepository
 from domain.exceptions import RepositoryReadError, RepositoryWriteError
 from domain.recipe_record import RecipeRecord
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class LocalJsonRecipeRepository(RecipeRepository):
@@ -28,7 +30,9 @@ class LocalJsonRecipeRepository(RecipeRepository):
             )
             return recipe_record
         except Exception as exc:
-            logger.error(f"Error saving recipe to local JSON store: {exc}")
+            logger.exception(
+                "Unexpected error saving recipe to local JSON store: %s", exc
+            )
             raise RepositoryWriteError(
                 f"Error saving recipe to local JSON store: {exc}"
             ) from exc
@@ -43,7 +47,9 @@ class LocalJsonRecipeRepository(RecipeRepository):
                 recipe_path.read_text(encoding="utf-8")
             )
         except Exception as exc:
-            logger.error(f"Error loading recipe from local JSON store: {exc}")
+            logger.exception(
+                "Unexpected error loading recipe from local JSON store: %s", exc
+            )
             raise RepositoryReadError(
                 f"Error loading recipe from local JSON store: {exc}"
             ) from exc
@@ -69,7 +75,9 @@ class LocalJsonRecipeRepository(RecipeRepository):
                 if record:
                     recipes.append(record)
             except Exception as exc:
-                logger.warning(f"Failed to load recipe {record_id}: {exc}")
+                logger.warning(
+                    "Failed to load recipe: record_id=%s error=%s", record_id, exc
+                )
 
         return recipes
 

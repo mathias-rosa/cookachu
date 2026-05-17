@@ -7,8 +7,10 @@ from pydantic import BaseModel, Field
 
 from domain.exceptions import InvalidSourceError, SourceDownloadError, SourceFetchError
 from domain.reel import DownloadedReel
-from logger import logger
+from logger import get_logger
 from providers.reels_downloader import ReelDownloader
+
+logger = get_logger(__name__)
 
 
 class DownloadRequest(BaseModel):
@@ -83,21 +85,21 @@ async def download_reel(request: DownloadRequest) -> DownloadedReel:
         )
 
     try:
-        logger.info(f"Processing download request for: {request.reel_url}")
+        logger.info("Download request received: reel_url=%s", request.reel_url)
         result = downloader.download_reel(request.reel_url)
-        logger.info(f"Successfully downloaded reel: {result.shortcode}")
+        logger.info("Download request completed: shortcode=%s", result.shortcode)
         return result
 
     except InvalidSourceError as e:
-        logger.warning(f"Invalid source error: {e}")
+        logger.warning("Invalid source error: %s", e)
         raise HTTPException(status_code=400, detail=str(e)) from e
 
     except (SourceFetchError, SourceDownloadError) as e:
-        logger.error(f"Download error: {e}")
+        logger.error("Download error: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
     except Exception as e:
-        logger.error(f"Unexpected error during download: {e}", exc_info=True)
+        logger.exception("Unexpected error during download: %s", e)
         raise HTTPException(
             status_code=500, detail="Unexpected error during download"
         ) from e

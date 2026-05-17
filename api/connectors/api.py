@@ -12,6 +12,9 @@ from connectors import CookachuConnector
 from core.ports import RecipeRepository
 from core.process_reel import ProcessReelService
 from domain.recipe_record import RecipeRecord
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class RecipePage(BaseModel):
@@ -87,6 +90,7 @@ class ApiConnector(CookachuConnector):
         openapi = get_openapi(title=app.title, version=app.version, routes=app.routes)
         with open("openapi.json", "w") as f:
             f.write(json.dumps(openapi, indent=2))
+        logger.debug("OpenAPI spec written to openapi.json")
         return app
 
     def _paginate_recipes(self, page: int, page_size: int) -> RecipePage:
@@ -111,6 +115,7 @@ class ApiConnector(CookachuConnector):
         )
 
     async def run(self) -> None:
+        logger.info("Starting API server: host=%s port=%s", self.host, self.port)
         config = uvicorn.Config(
             self.app,
             host=self.host,

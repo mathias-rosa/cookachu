@@ -3,7 +3,9 @@ import asyncio
 from connectors import CookachuConnector
 from core.process_reel import ProcessReelService
 from domain.exceptions import CookachuError, NotARecipeError
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 PROMPT_REEL_URL = "Enter Instagram Reel URL: "
 
@@ -13,11 +15,13 @@ class CLIConnector(CookachuConnector):
         self.service = service
 
     async def run(self) -> None:
+        logger.info("CLI connector started")
         while True:
             reel_url = await asyncio.to_thread(input, PROMPT_REEL_URL)
             reel_url = reel_url.strip()
 
             if reel_url.lower() == "exit":
+                logger.info("CLI connector exiting")
                 print("Exiting the application. Goodbye!")
                 break
 
@@ -36,8 +40,8 @@ class CLIConnector(CookachuConnector):
             except NotARecipeError:
                 print("Error: The extracted content is not a valid recipe.")
             except CookachuError as exc:
-                logger.error(f"CLI processing error: {exc}")
+                logger.warning("CLI processing error: %s", exc)
                 print(f"Error: {exc}")
             except Exception as exc:
-                logger.error(f"CLI processing error: {exc}")
+                logger.exception("Unexpected CLI processing error: %s", exc)
                 print("An unexpected error occurred while processing the reel.")

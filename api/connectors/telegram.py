@@ -19,7 +19,9 @@ from core.ports import RecipeRepository
 from core.process_reel import ProcessReelService
 from domain.exceptions import CookachuError, NotARecipeError
 from domain.recipe_record import RecipeRecord
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 INSTAGRAM_REEL_URL_PATTERN = re.compile(
     r"https?://(?:www\.)?instagram\.com/reel/[A-Za-z0-9_-]+/?(?:\?[\S]*)?",
@@ -160,7 +162,11 @@ class TelegramConnector(CookachuConnector):
                 recipe_html = self._format_recipe_html(record)
                 await waiting_message.edit_text(recipe_html, parse_mode="HTML")
             except Exception as exc:
-                logger.error(f"Error retrieving recipe {recipe_id}: {exc}")
+                logger.error(
+                    "Error retrieving recipe: recipe_id=%s error=%s",
+                    recipe_id,
+                    exc,
+                )
                 await waiting_message.edit_text(f"❌ Erreur: {exc}")
 
         @self.router.message(Command("ids"))
@@ -185,7 +191,7 @@ class TelegramConnector(CookachuConnector):
                     reply_markup=keyboard,
                 )
             except Exception as exc:
-                logger.error(f"Error listing recipes: {exc}")
+                logger.error("Error listing recipes: %s", exc)
                 await waiting_message.edit_text(f"❌ Erreur: {exc}")
 
         @self.router.callback_query(lambda c: c.data and c.data.startswith("recipe:"))
@@ -220,7 +226,7 @@ class TelegramConnector(CookachuConnector):
                     )
                 await callback_query.answer()
             except Exception as exc:
-                logger.error(f"Error in recipe callback: {exc}")
+                logger.error("Error handling recipe callback: %s", exc)
                 await callback_query.answer(
                     f"❌ Erreur: {exc}",
                     show_alert=True,
@@ -239,6 +245,12 @@ class TelegramConnector(CookachuConnector):
             if not reel_url:
                 await message.answer("Je n'ai pas trouvé d'URL Reel valide 🥲")
                 return
+
+            logger.debug(
+                "Telegram reel received: reel_url=%s user_id=%s",
+                reel_url,
+                message.from_user.id if message.from_user else "unknown",
+            )
 
             waiting_message = await message.answer(
                 "Traitement en cours, ça peut prendre quelques secondes..."
@@ -275,7 +287,7 @@ class TelegramConnector(CookachuConnector):
         except CookachuError:
             raise
         except Exception as exc:
-            logger.error(f"Unexpected error processing reel: {exc}")
+            logger.exception("Unexpected error processing reel: %s", exc)
             raise
 
     @staticmethod

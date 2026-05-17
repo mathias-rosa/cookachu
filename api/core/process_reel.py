@@ -4,7 +4,9 @@ from core.ports import RecipeExtractor, RecipeRepository, ReelDownloader
 from domain.exceptions import NotARecipeError
 from domain.recipe_record import RecipeRecord
 from domain.recipe_source import ReelRecipeSource
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class ProcessReelService:
@@ -19,6 +21,7 @@ class ProcessReelService:
         self.repository = repository
 
     def execute(self, reel_url: str) -> RecipeRecord:
+        logger.info("Processing reel: reel_url=%s", reel_url)
         downloaded = self.downloader.download_reel(reel_url)
 
         try:
@@ -32,7 +35,8 @@ class ProcessReelService:
             existing_record = self.repository.find_by_id(source.canonical_id())
             if existing_record:
                 logger.info(
-                    f"Source already processed, reusing stored record: {existing_record.id}"
+                    "Source already processed: record_id=%s",
+                    existing_record.id,
                 )
                 return existing_record
 
@@ -41,7 +45,7 @@ class ProcessReelService:
             )
 
             if not recipe.is_recipe:
-                logger.error("The extracted content is not a valid recipe.")
+                logger.warning("Extracted content is not a recipe.")
                 raise NotARecipeError("The extracted content is not a valid recipe.")
 
             recipe_result = RecipeRecord(
@@ -49,6 +53,7 @@ class ProcessReelService:
                 source=source,
             )
             saved = self.repository.save(recipe_result)
+            logger.info("Recipe saved: record_id=%s", saved.id)
             return saved
         finally:
             self._cleanup_video(downloaded.video_path)
@@ -59,4 +64,4 @@ class ProcessReelService:
             if os.path.exists(video_path):
                 os.remove(video_path)
         except Exception as exc:
-            logger.error(f"Error cleaning up video file: {exc}")
+            logger.warning("Failed to clean up video file: %s", exc)

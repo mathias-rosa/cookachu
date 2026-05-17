@@ -7,7 +7,9 @@ import httpx
 
 from domain.exceptions import InvalidSourceError, SourceDownloadError, SourceFetchError
 from domain.reel import DownloadedReel
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class HttpReelDownloader:
@@ -53,6 +55,11 @@ class HttpReelDownloader:
         """Async implementation of download_reel."""
         payload = {"reel_url": reel_url}
         last_error: Exception | None = None
+        logger.debug(
+            "HTTP download request: reel_url=%s base_url=%s",
+            reel_url,
+            self.base_url,
+        )
 
         for attempt in range(1, self.max_retries + 1):
             try:
@@ -64,17 +71,19 @@ class HttpReelDownloader:
 
                 if response.status_code == 400:
                     error_detail = response.json().get("detail", "Invalid reel URL")
-                    logger.error(f"Invalid source: {error_detail}")
+                    logger.warning("Invalid source: %s", error_detail)
                     raise InvalidSourceError(error_detail)
 
                 if response.status_code == 500:
                     error_detail = response.json().get("detail", "Download failed")
-                    logger.error(f"Download service error: {error_detail}")
+                    logger.error("Download service error: %s", error_detail)
                     raise SourceDownloadError(error_detail)
 
                 if response.status_code != 200:
                     logger.error(
-                        f"Unexpected status {response.status_code}: {response.text}"
+                        "Unexpected status: status_code=%s body=%s",
+                        response.status_code,
+                        response.text,
                     )
                     raise SourceDownloadError(
                         f"Downloader service returned {response.status_code}"
@@ -82,7 +91,10 @@ class HttpReelDownloader:
 
                 data = response.json()
                 result = DownloadedReel(**data)
-                logger.info(f"Successfully downloaded reel: {result.shortcode}")
+                logger.info(
+                    "HTTP downloader success: shortcode=%s",
+                    result.shortcode,
+                )
                 return result
 
             except (InvalidSourceError, SourceDownloadError):
@@ -90,14 +102,22 @@ class HttpReelDownloader:
                 raise
             except httpx.TimeoutException as e:
                 last_error = e
-                logger.warning(f"Timeout on attempt {attempt}/{self.max_retries}: {e}")
+                logger.warning(
+                    "Timeout on attempt %s/%s: %s",
+                    attempt,
+                    self.max_retries,
+                    e,
+                )
                 if attempt < self.max_retries:
                     await asyncio.sleep(2 ** (attempt - 1))  # Exponential backoff
                 continue
             except httpx.ConnectError as e:
                 last_error = e
                 logger.warning(
-                    f"Connection error on attempt {attempt}/{self.max_retries}: {e}"
+                    "Connection error on attempt %s/%s: %s",
+                    attempt,
+                    self.max_retries,
+                    e,
                 )
                 if attempt < self.max_retries:
                     await asyncio.sleep(2 ** (attempt - 1))  # Exponential backoff
@@ -105,23 +125,28 @@ class HttpReelDownloader:
             except httpx.RequestError as e:
                 last_error = e
                 logger.warning(
-                    f"Request error on attempt {attempt}/{self.max_retries}: {e}"
+                    "Request error on attempt %s/%s: %s",
+                    attempt,
+                    self.max_retries,
+                    e,
                 )
                 if attempt < self.max_retries:
                     await asyncio.sleep(2 ** (attempt - 1))  # Exponential backoff
                 continue
             except json.JSONDecodeError as e:
                 last_error = e
-                logger.error(f"Invalid JSON response from downloader: {e}")
+                logger.error("Invalid JSON response from downloader: %s", e)
                 raise SourceDownloadError("Downloader returned invalid response") from e
             except Exception as e:
                 last_error = e
-                logger.error(f"Unexpected error during download: {e}", exc_info=True)
+                logger.exception("Unexpected error during download: %s", e)
                 raise SourceFetchError(f"Unexpected error: {e}") from e
 
         # All retries exhausted
         logger.error(
-            f"Failed to download after {self.max_retries} attempts: {last_error}"
+            "Failed to download after %s attempts: %s",
+            self.max_retries,
+            last_error,
         )
         raise SourceFetchError(
             f"Download failed after {self.max_retries} retries"

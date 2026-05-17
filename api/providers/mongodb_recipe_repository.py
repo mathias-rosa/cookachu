@@ -4,7 +4,9 @@ from pymongo.errors import PyMongoError
 from core.ports import RecipeRepository
 from domain.exceptions import RepositoryReadError, RepositoryWriteError
 from domain.recipe_record import RecipeRecord
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class MongoDBRecipeRepository(RecipeRepository):
@@ -41,12 +43,12 @@ class MongoDBRecipeRepository(RecipeRepository):
         except RepositoryWriteError:
             raise
         except PyMongoError as exc:
-            logger.error(f"Error saving recipe to MongoDB: {exc}")
+            logger.error("Error saving recipe to MongoDB: %s", exc)
             raise RepositoryWriteError(
                 f"Error saving recipe to MongoDB: {exc}"
             ) from exc
         except Exception as exc:
-            logger.error(f"Error saving recipe to MongoDB: {exc}")
+            logger.exception("Unexpected error saving recipe to MongoDB: %s", exc)
             raise RepositoryWriteError(
                 f"Error saving recipe to MongoDB: {exc}"
             ) from exc
@@ -59,12 +61,14 @@ class MongoDBRecipeRepository(RecipeRepository):
 
             return RecipeRecord.model_validate(document)
         except PyMongoError as exc:
-            logger.error(f"Error finding recipe by id in MongoDB: {exc}")
+            logger.error("Error finding recipe by id in MongoDB: %s", exc)
             raise RepositoryReadError(
                 f"Error finding recipe by id in MongoDB: {exc}"
             ) from exc
         except Exception as exc:
-            logger.error(f"Error finding recipe by id in MongoDB: {exc}")
+            logger.exception(
+                "Unexpected error finding recipe by id in MongoDB: %s", exc
+            )
             raise RepositoryReadError(
                 f"Error finding recipe by id in MongoDB: {exc}"
             ) from exc
@@ -74,12 +78,12 @@ class MongoDBRecipeRepository(RecipeRepository):
             cursor = self.collection.find({}, {"id": 1, "_id": 0}).sort("id", 1)
             return [document["id"] for document in cursor if document.get("id")]
         except PyMongoError as exc:
-            logger.error(f"Error listing recipe ids in MongoDB: {exc}")
+            logger.error("Error listing recipe ids in MongoDB: %s", exc)
             raise RepositoryReadError(
                 f"Error listing recipe ids in MongoDB: {exc}"
             ) from exc
         except Exception as exc:
-            logger.error(f"Error listing recipe ids in MongoDB: {exc}")
+            logger.exception("Unexpected error listing recipe ids in MongoDB: %s", exc)
             raise RepositoryReadError(
                 f"Error listing recipe ids in MongoDB: {exc}"
             ) from exc
@@ -95,6 +99,8 @@ class MongoDBRecipeRepository(RecipeRepository):
                 if record:
                     recipes.append(record)
             except Exception as exc:
-                logger.warning(f"Failed to load recipe {record_id}: {exc}")
+                logger.warning(
+                    "Failed to load recipe: record_id=%s error=%s", record_id, exc
+                )
 
         return recipes

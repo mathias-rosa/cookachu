@@ -1,12 +1,14 @@
 from core.process_reel import ProcessReelService
 from infrastructure.config import AppConfig
-from logger import logger
+from logger import get_logger
 from providers.ai_recipe_extractor import AiRecipeExtractor
 from providers.http_reel_downloader import HttpReelDownloader
 from providers.local_json_recipe_repository import LocalJsonRecipeRepository
 from providers.mongodb_recipe_repository import MongoDBRecipeRepository
 from providers.reels_downloader import ReelDownloader
 from providers.supabase_recipe_repository import SupabaseRecipeRepository
+
+logger = get_logger(__name__)
 
 
 def build_repository(config: AppConfig):
@@ -25,9 +27,11 @@ def build_process_reel_service(
             logger.error("downloader_http_url not set for HTTP backend")
             raise ValueError("DOWNLOADER_HTTP_URL must be set")
         downloader = HttpReelDownloader(base_url=config.downloader_http_url)
+        logger.info("Using HTTP downloader: base_url=%s", config.downloader_http_url)
     else:
         # Default to direct downloader
         downloader = ReelDownloader(target_dir=target_dir)
+        logger.info("Using direct downloader: target_dir=%s", target_dir)
 
     extractor = AiRecipeExtractor(model_name=config.ai_model)
     return ProcessReelService(
@@ -39,6 +43,9 @@ def build_process_reel_service(
 
 def _build_repository(config: AppConfig):
     if config.repository_backend == "local_json":
+        logger.info(
+            "Using local JSON repository: target_dir=%s", config.local_json_target_dir
+        )
         return LocalJsonRecipeRepository(target_dir=config.local_json_target_dir)
 
     if config.repository_backend == "supabase":
@@ -47,6 +54,7 @@ def _build_repository(config: AppConfig):
                 "SUPABASE_URL and SUPABASE_KEY must be set for Supabase backend."
             )
             raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set")
+        logger.info("Using Supabase repository")
         return SupabaseRecipeRepository(
             url=config.supabase_url,
             key=config.supabase_key,
@@ -56,11 +64,16 @@ def _build_repository(config: AppConfig):
         if not config.mongodb_uri:
             logger.error("MONGODB_URI must be set for MongoDB backend.")
             raise ValueError("MONGODB_URI must be set")
+        logger.info(
+            "Using MongoDB repository: database=%s collection=%s",
+            config.mongodb_database,
+            config.mongodb_collection,
+        )
         return MongoDBRecipeRepository(
             uri=config.mongodb_uri,
             database_name=config.mongodb_database,
             collection_name=config.mongodb_collection,
         )
 
-    logger.error(f"Unsupported repository backend: {config.repository_backend}")
+    logger.error("Unsupported repository backend: %s", config.repository_backend)
     raise ValueError(f"Unsupported repository backend: {config.repository_backend}")

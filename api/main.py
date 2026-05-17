@@ -8,7 +8,9 @@ from connectors.cli import CLIConnector
 from connectors.telegram import TelegramConnector
 from infrastructure.config import AppConfig
 from infrastructure.container import build_process_reel_service, build_repository
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 load_dotenv()
 
@@ -34,6 +36,7 @@ async def main() -> None:
 
     connectors = []
     selected_modes = set(args.mode or ["cli", "telegram", "api"])
+    logger.info("Starting connectors: modes=%s", ",".join(sorted(selected_modes)))
 
     if "cli" in selected_modes:
         connectors.append(CLIConnector(service=service))

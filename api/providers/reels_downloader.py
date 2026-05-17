@@ -1,3 +1,4 @@
+import os
 from glob import glob
 from pathlib import Path
 
@@ -5,7 +6,9 @@ from instaloader import Instaloader, Post
 
 from domain.exceptions import InvalidSourceError, SourceDownloadError, SourceFetchError
 from domain.reel import DownloadedReel
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class ReelDownloader:
@@ -14,39 +17,57 @@ class ReelDownloader:
 
     def download_reel(self, reel_url: str) -> DownloadedReel:
         # Ensure download directory exists for temp files and media output.
-        Path(self.target_dir).mkdir(parents=True, exist_ok=True)
+        target_dir_path = Path(self.target_dir).resolve()
+        target_dir_path.mkdir(parents=True, exist_ok=True)
         shortcode = self._extract_shortcode(reel_url)
         if not shortcode:
-            logger.error("Invalid source URL provided for reel download.")
+            logger.warning("Invalid source URL provided for reel download.")
             raise InvalidSourceError(
                 "The provided URL does not appear to be a valid Instagram Reel URL."
             )
+
+        logger.debug(
+            "Download context: cwd=%s target_dir=%s exists=%s writable=%s",
+            Path.cwd(),
+            target_dir_path,
+            target_dir_path.exists(),
+            os.access(target_dir_path, os.W_OK),
+        )
 
         loader = Instaloader(filename_pattern="{shortcode}")
 
         try:
             reel = self._fetch_post(loader, shortcode)
         except Exception as e:
-            logger.error(f"Error fetching reel: {e}")
+            logger.error("Error fetching reel: %s", e)
             raise SourceFetchError(f"Error fetching reel: {e}") from e
 
         if not reel.is_video:
-            logger.error("The provided URL does not point to a video reel.")
+            logger.warning("The provided URL does not point to a video reel.")
             raise InvalidSourceError("The provided URL does not point to a video reel.")
 
-        logger.info("Downloading reel (video and caption)...")
+        logger.info("Downloading reel media: shortcode=%s", shortcode)
         try:
-            loader.download_post(reel, target=self.target_dir)
+            loader.download_post(reel, target=str(target_dir_path))
         except Exception as e:
-            logger.error(f"Error downloading reel media: {e}")
+            logger.error(
+                "Error downloading reel media: %s (shortcode=%s target_dir=%s)",
+                e,
+                shortcode,
+                target_dir_path,
+            )
             raise SourceDownloadError(f"Error downloading reel media: {e}") from e
-        logger.info(f"Reel downloaded successfully. Shortcode: {shortcode}")
+        logger.info("Reel downloaded successfully: shortcode=%s", shortcode)
 
         video_path = self._expected_video_path(reel.shortcode)
         if not video_path or not Path(video_path).exists():
             video_path = self._find_video_file(shortcode)
         if not video_path:
-            logger.error("Could not find downloaded video.")
+            logger.error(
+                "Could not find downloaded video (shortcode=%s target_dir=%s)",
+                shortcode,
+                target_dir_path,
+            )
             raise SourceDownloadError("Could not find downloaded video.")
 
         caption = reel.caption or ""
@@ -75,10 +96,10 @@ class ReelDownloader:
         return reel
 
     def _expected_video_path(self, shortcode: str) -> str:
-        return str(Path(self.target_dir) / f"{shortcode}.mp4")
+        return str(Path(self.target_dir).resolve() / f"{shortcode}.mp4")
 
     def _find_video_file(self, shortcode: str) -> str | None:
-        mp4_files = glob(f"{self.target_dir}/{shortcode}*.mp4")
+        mp4_files = glob(f"{Path(self.target_dir).resolve()}/{shortcode}*.mp4")
         if not mp4_files:
             return None
 

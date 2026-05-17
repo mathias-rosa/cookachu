@@ -1,7 +1,9 @@
 import os
 from dataclasses import dataclass, field
 
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 SUPPORTED_REPOSITORY_BACKENDS = {"supabase", "local_json", "mongodb"}
 SUPPORTED_DOWNLOADER_BACKENDS = {"direct", "http"}
@@ -30,13 +32,13 @@ class AppConfig:
         repository_backend = os.getenv("RECIPE_REPOSITORY_BACKEND", "supabase").strip()
         if repository_backend not in SUPPORTED_REPOSITORY_BACKENDS:
             supported = ", ".join(sorted(SUPPORTED_REPOSITORY_BACKENDS))
-            logger.error(f"Invalid repository backend: {repository_backend}")
+            logger.error("Invalid repository backend: %s", repository_backend)
             raise ValueError(f"RECIPE_REPOSITORY_BACKEND must be one of: {supported}")
 
         downloader_backend = os.getenv("DOWNLOADER_BACKEND", "direct").strip()
         if downloader_backend not in SUPPORTED_DOWNLOADER_BACKENDS:
             supported = ", ".join(sorted(SUPPORTED_DOWNLOADER_BACKENDS))
-            logger.error(f"Invalid downloader backend: {downloader_backend}")
+            logger.error("Invalid downloader backend: %s", downloader_backend)
             raise ValueError(f"DOWNLOADER_BACKEND must be one of: {supported}")
 
         downloader_http_url = os.getenv("DOWNLOADER_HTTP_URL")

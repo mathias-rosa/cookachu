@@ -8,7 +8,9 @@ from domain.exceptions import (
     VideoReadError,
 )
 from domain.recipe import Recipe
-from logger import logger
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class AiRecipeExtractor:
@@ -18,15 +20,16 @@ class AiRecipeExtractor:
             output_type=Recipe,
             instructions=SYSTEM_PROMPT,
         )
+        logger.info("Recipe extractor initialized: model=%s", model_name)
 
     def extract_recipe(self, video_path: str, caption: str) -> Recipe:
         try:
             video_bytes = Path(video_path).read_bytes()
         except Exception as e:
-            logger.error(f"Could not read video file: {e}")
+            logger.error("Could not read video file: path=%s error=%s", video_path, e)
             raise VideoReadError(f"Could not read video file: {e}") from e
 
-        logger.info("Generating recipe...")
+        logger.info("Generating recipe from reel content")
 
         prompt = self._build_prompt(caption)
         video_content = BinaryContent(
@@ -37,7 +40,7 @@ class AiRecipeExtractor:
         try:
             result = self.agent.run_sync([prompt, video_content])
         except Exception as e:
-            logger.error(f"Error generating recipe: {e}")
+            logger.error("Error generating recipe: %s", e)
             raise RecipeGenerationError(f"Error generating recipe: {e}") from e
 
         output = result.output
