@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { Clock, Users } from 'lucide-react';
 
 import type { components } from '@/api/types';
+import { useEnumLabels } from '@/i18n/enum-labels';
 
 type RecipeRecord = components['schemas']['RecipeRecord'];
 
@@ -13,6 +14,7 @@ type RecipeCardProps = {
 
 export const RecipeCard = ({ record, className }: RecipeCardProps) => {
   const { recipe, source } = record;
+  const { cuisineType, dishType } = useEnumLabels();
   const totalMinutes =
     (recipe.prep_time_minutes ?? 0) + (recipe.cook_time_minutes ?? 0);
   const hasTime = totalMinutes > 0;
@@ -31,8 +33,8 @@ export const RecipeCard = ({ record, className }: RecipeCardProps) => {
 
         <Card.Content className="space-y-3">
           <div className="flex flex-wrap gap-2">
-            <Chip size="sm">{recipe.cuisine_type}</Chip>
-            <Chip size="sm">{recipe.dish_type}</Chip>
+            <Chip size="sm">{cuisineType(recipe.cuisine_type)}</Chip>
+            <Chip size="sm">{dishType(recipe.dish_type)}</Chip>
           </div>
         </Card.Content>
 

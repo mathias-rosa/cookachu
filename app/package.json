@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "generate:types": "openapi-typescript ../api/openapi.json --output ./src/api/types.ts"
+    "generate:types": "openapi-typescript ../api/openapi.json --output ./src/api/types.ts",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "dependencies": {
     "@fontsource-variable/arima": "^5.2.8",
@@ -25,7 +26,8 @@
     "openapi-fetch": "^0.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "typesafe-i18n": "^5.27.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
