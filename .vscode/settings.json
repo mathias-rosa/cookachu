@@ -2,6 +2,7 @@
 	"[python]": {
 		"editor.codeActionsOnSave": {
 			"source.organizeImports.ruff": "explicit"
-		}
-	}
+		},
+	},
+	"python.defaultInterpreterPath": "${workspaceFolder}/api/.venv/bin/python"
 }
