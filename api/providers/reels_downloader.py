@@ -1,5 +1,4 @@
 import os
-from glob import glob
 from pathlib import Path
 
 from instaloader import Instaloader, Post
@@ -48,7 +47,7 @@ class ReelDownloader:
 
         logger.info("Downloading reel media: shortcode=%s", shortcode)
         try:
-            loader.download_post(reel, target=str(target_dir_path))
+            loader.download_post(reel, target=self.target_dir)
         except Exception as e:
             logger.error(
                 "Error downloading reel media: %s (shortcode=%s target_dir=%s)",
@@ -60,12 +59,10 @@ class ReelDownloader:
         logger.info("Reel downloaded successfully: shortcode=%s", shortcode)
 
         video_path = self._expected_video_path(reel.shortcode)
-        if not video_path or not Path(video_path).exists():
-            video_path = self._find_video_file(shortcode)
-        if not video_path:
+        if not Path(video_path).exists():
             logger.error(
-                "Could not find downloaded video (shortcode=%s target_dir=%s)",
-                shortcode,
+                "Downloaded video not found at expected location: video_path=%s target_dir=%s",
+                video_path,
                 target_dir_path,
             )
             raise SourceDownloadError("Could not find downloaded video.")
@@ -96,11 +93,4 @@ class ReelDownloader:
         return reel
 
     def _expected_video_path(self, shortcode: str) -> str:
-        return str(Path(self.target_dir).resolve() / f"{shortcode}.mp4")
-
-    def _find_video_file(self, shortcode: str) -> str | None:
-        mp4_files = glob(f"{Path(self.target_dir).resolve()}/{shortcode}*.mp4")
-        if not mp4_files:
-            return None
-
-        return max(mp4_files, key=lambda p: Path(p).stat().st_mtime)
+        return str(Path(self.target_dir) / f"{shortcode}.mp4")
